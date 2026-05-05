@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karl Antoine — Pianist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #060608;
+    --deep: #0D0C10;
+    --card: #13121A;
+    --border: rgba(200,140,50,0.18);
+    --gold: #C8901A;
+    --amber: #E0A840;
+    --copper: #D4621A;
+    --cream: #F2EBD9;
+    --muted: rgba(242,235,217,0.5);
+    --faint: rgba(242,235,217,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed; top: 0; left: 0;
+    width: 10px; height: 10px;
+    background: var(--amber);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 36px; height: 36px;
+    border: 1px solid var(--amber);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.4s cubic-bezier(.2,.6,.3,1), opacity 0.3s;
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.6rem 4rem;
+    background: linear-gradient(to bottom, rgba(6,6,8,0.9) 0%, transparent 100%);
+    backdrop-filter: blur(0px);
+    transition: all 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(6,6,8,0.95);
+    backdrop-filter: blur(20px);
+    padding: 1rem 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+  }
+  .nav-links {
+    display: flex; gap: 2.4rem; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--amber); }
+  .nav-cta {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--amber);
+    border: none;
+    padding: 0.6rem 1.4rem;
+    cursor: none;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--copper); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(212,98,26,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 20% 80%, rgba(200,144,26,0.08) 0%, transparent 60%);
+  }
+  .hero-grain {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .hero-left {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 6rem 5rem;
+    z-index: 2;
+  }
+  .hero-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--amber);
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 6vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.3rem;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--amber);
+    display: block;
+  }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--muted);
+    margin: 1.6rem 0 3rem;
+    line-height: 1.7;
+    max-width: 380px;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn-primary {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--amber);
+    padding: 1rem 2rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+  }
+  .btn-primary:hover { background: var(--copper); transform: translateY(-2px); }
+  .btn-ghost {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cream);
+    border: 1px solid var(--border);
+    padding: 1rem 2rem;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+  }
+  .btn-ghost:hover { border-color: var(--amber); color: var(--amber); transform: translateY(-2px); }
+
+  .hero-stats {
+    margin-top: 4rem;
+    display: flex;
+    gap: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--amber);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-photo-wrap {
+    position: relative;
+    width: 85%;
+    height: 90vh;
+    margin-top: 5vh;
+  }
+  .hero-photo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--black) 0%, transparent 30%),
+                linear-gradient(to top, var(--black) 0%, transparent 30%);
+    z-index: 1;
+  }
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(15%) contrast(1.1);
+  }
+  .hero-vinyl {
+    position: absolute;
+    right: -60px;
+    top: 15%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: radial-gradient(circle at center, #1a1612 40%, #2a2018 100%);
+    display: flex; align-items: center; justify-content: center;
+    animation: spin 20s linear infinite;
+    z-index: 2;
+    opacity: 0.6;
+  }
+  .hero-vinyl::after {
+    content: '';
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--black);
+    border: 1px solid var(--border);
+  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* SCROLLING TICKER */
+  .ticker {
+    background: var(--amber);
+    padding: 0.8rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    padding: 0 3rem;
+  }
+  .ticker-dot {
+    color: var(--black);
+    opacity: 0.4;
+    padding: 0 1rem;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION SHARED */
+  section { position: relative; }
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 3.5vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+  .section-title em { font-style: italic; color: var(--amber); }
+  .section-link {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--amber);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .section-link:hover { opacity: 1; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
+
+  /* ABOUT */
+  .about {
+    padding: 8rem 0;
+    background: var(--deep);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 1.0rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+  .about-text p strong {
+    color: var(--cream);
+    font-weight: 400;
+  }
+  .about-pull {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--cream);
+    border-left: 2px solid var(--amber);
+    padding-left: 2rem;
+    margin: 2rem 0;
+  }
+  .about-venues {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 2rem;
+  }
+  .venue-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.9rem;
+  }
+  .about-image-side {
+    position: relative;
+  }
+  .about-img-frame {
+    position: relative;
+    overflow: hidden;
+  }
+  .about-img-frame::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px;
+    right: 20px; bottom: 20px;
+    border: 1px solid var(--border);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .about-img-frame img {
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+    object-position: top center;
+    position: relative;
+    z-index: 1;
+    display: block;
+    filter: grayscale(20%);
+  }
+  .about-badge {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: var(--amber);
+    color: var(--black);
+    padding: 1.2rem 1.6rem;
+    z-index: 2;
+  }
+  .about-badge span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    display: block;
+    line-height: 1;
+  }
+  .about-badge small {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* SHOWS */
+  .shows {
+    padding: 8rem 0;
+  }
+  .show-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .show-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+    cursor: none;
+  }
+  .show-item:hover { background: var(--faint); padding-left: 1rem; padding-right: 1rem; margin: 0 -1rem; }
+  .show-date {
+    text-align: center;
+  }
+  .show-date .day {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--amber);
+  }
+  .show-date .mon {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .show-info .venue {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+  }
+  .show-info .details {
+    font-size: 0.78rem;
+    color: var(--muted);
+    display: flex;
+    gap: 1.2rem;
+  }
+  .show-type {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 0.3rem 0.7rem;
+    height: fit-content;
+  }
+  .show-type.church { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .show-type.lounge { background: var(--copper); color: var(--cream); }
+  .show-ticket {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .show-ticket:hover { background: var(--amber); color: var(--black); }
+
+  /* VIDEOS */
+  .videos {
+    padding: 8rem 0;
+    background: var(--deep);
+  }
+  .video-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+  }
+  .video-card {
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    background: var(--card);
+  }
+  .video-card.featured { grid-row: 1 / 3; }
+  .video-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    filter: brightness(0.7) grayscale(10%);
+    transition: filter 0.5s, transform 0.6s;
+    display: block;
+    background: linear-gradient(135deg, #1a1512, #0d0a08);
+  }
+  .video-card.featured .video-thumb {
+    height: 100%;
+    aspect-ratio: unset;
+  }
+  .video-card:hover .video-thumb { filter: brightness(0.5) grayscale(0%); transform: scale(1.04); }
+  .video-overlay {
+    position: absolute; inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+  }
+  .play-btn {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    border: 1px solid rgba(200,144,26,0.6);
+    background: rgba(200,144,26,0.15);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+    backdrop-filter: blur(4px);
+  }
+  .video-card:hover .play-btn {
+    background: var(--amber);
+    border-color: var(--amber);
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  .play-btn svg { fill: var(--cream); width: 18px; }
+  .video-card:hover .play-btn svg { fill: var(--black); }
+  .video-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+  }
+  .video-card.featured .video-title { font-size: 1.4rem; }
+  .video-meta {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  /* Video placeholder graphics */
+  .vid-placeholder {
+    width: 100%; background: #111;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .vid-placeholder .keys {
+    display: flex; gap: 3px; opacity: 0.2;
+  }
+  .vid-placeholder .key {
+    width: 18px; height: 60px;
+    background: var(--cream); border: 1px solid #333;
+    border-radius: 0 0 3px 3px;
+  }
+
+  /* MUSIC / LISTEN */
+  .listen {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, #0A0A0C 0%, #100D08 100%);
+  }
+  .listen-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .album-display {
+    position: relative;
+  }
+  .album-art {
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #1a1510, #0d0c0a);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  .album-art::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 30%, rgba(200,144,26,0.15) 0%, transparent 60%);
+  }
+  .piano-icon {
+    font-size: 5rem;
+    opacity: 0.15;
+    filter: grayscale(1);
+  }
+  .album-art .art-text {
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--amber);
+    opacity: 0.4;
+    bottom: 1.5rem;
+    left: 1.5rem;
+  }
+  .playing-bar {
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--amber), transparent);
+    animation: pulse-bar 3s ease-in-out infinite;
+  }
+  @keyframes pulse-bar {
+    0%, 100% { opacity: 0.4; transform: scaleX(0.4); }
+    50% { opacity: 1; transform: scaleX(1); }
+  }
+  .waveform {
+    position: absolute;
+    bottom: 1.5rem; right: 1.5rem;
+    display: flex; align-items: flex-end; gap: 2px;
+  }
+  .wave-bar {
+    width: 3px;
+    background: var(--amber);
+    border-radius: 1px;
+    opacity: 0.5;
+    animation: wave 1.2s ease-in-out infinite;
+  }
+  .wave-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+  .wave-bar:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+  .wave-bar:nth-child(3) { height: 22px; animation-delay: 0.2s; }
+  .wave-bar:nth-child(4) { height: 14px; animation-delay: 0.3s; }
+  .wave-bar:nth-child(5) { height: 20px; animation-delay: 0.15s; }
+  .wave-bar:nth-child(6) { height: 10px; animation-delay: 0.25s; }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.5); opacity: 0.3; }
+    50% { transform: scaleY(1); opacity: 0.8; }
+  }
+
+  .platforms {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .platform-link {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.1rem 1.4rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--cream);
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.02);
+  }
+  .platform-link:hover {
+    border-color: var(--amber);
+    background: rgba(200,144,26,0.06);
+    transform: translateX(6px);
+  }
+  .platform-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .platform-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    flex: 1;
+  }
+  .platform-arrow {
+    color: var(--amber);
+    opacity: 0.5;
+    font-size: 1rem;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .platform-link:hover .platform-arrow { opacity: 1; transform: translateX(4px); }
+
+  /* STORE */
+  .store {
+    padding: 8rem 0;
+    background: var(--deep);
+  }
+  .store-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .store-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: none;
+  }
+  .store-card:hover { border-color: var(--amber); transform: translateY(-6px); }
+  .store-card-img {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #141210, #0a0908);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .store-card-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, var(--card) 100%);
+  }
+  .store-card-img .product-icon { font-size: 3.5rem; opacity: 0.2; }
+  .store-badge {
+    position: absolute;
+    top: 0.8rem; left: 0.8rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--amber);
+    color: var(--black);
+    padding: 0.3rem 0.6rem;
+    z-index: 2;
+  }
+  .store-card-body { padding: 1.4rem; }
+  .store-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+  }
+  .store-card-sub {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+  }
+  .store-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .store-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--amber);
+  }
+  .store-price small {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-left: 0.2rem;
+  }
+  .btn-buy {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--amber);
+    color: var(--black);
+    border: none;
+    padding: 0.6rem 1.1rem;
+    cursor: none;
+    transition: background 0.2s;
+  }
+  .btn-buy:hover { background: var(--copper); color: var(--cream); }
+
+  /* CONTACT / BOOKING */
+  .booking {
+    padding: 10rem 0;
+    background: var(--black);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .booking::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,144,26,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .booking-eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.5rem;
+  }
+  .booking-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .booking-title em { font-style: italic; color: var(--amber); }
+  .booking-sub {
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+  .booking-email {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--cream);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .booking-email:hover { color: var(--amber); border-color: var(--amber); }
+  .socials {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+  }
+  .social-link {
+    width: 44px; height: 44px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    color: var(--cream);
+    font-size: 0.8rem;
+    font-family: 'Syne', sans-serif;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .social-link:hover { background: var(--amber); color: var(--black); border-color: var(--amber); }
+
+  /* FOOTER */
+  footer {
+    background: #040405;
+    padding: 2.5rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--amber);
+  }
+  .footer-copy {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .footer-links {
+    display: flex; gap: 1.6rem; list-style: none;
+  }
+  .footer-links a {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--amber); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    animation: modal-in 0.3s cubic-bezier(.2,.8,.3,1);
+  }
+  @keyframes modal-in {
+    from { transform: scale(0.92) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none;
+    color: var(--muted); font-size: 1.2rem; cursor: none;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--amber); }
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    margin-bottom: 0.4rem;
+  }
+  .modal-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--cream);
+    padding: 0.7rem 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--amber);
+  }
+  .form-group textarea { height: 100px; resize: vertical; }
+  .form-group select option { background: var(--card); }
+  .form-submit {
+    width: 100%;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--amber);
+    color: var(--black);
+    border: none;
+    padding: 0.9rem;
+    cursor: none;
+    transition: background 0.2s;
+  }
+  .form-submit:hover { background: var(--copper); color: var(--cream); }
+
+  /* FADE-IN ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    nav.scrolled { padding: 0.8rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: 100vh; }
+    .hero-right { display: none; }
+    .hero-left { padding: 8rem 1.5rem 5rem; }
+    .container { padding: 0 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-image-side { order: -1; }
+    .listen-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .store-grid { grid-template-columns: 1fr 1fr; }
+    .video-grid { grid-template-columns: 1fr; }
+    .video-card.featured { grid-row: auto; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem; }
+    .show-item { grid-template-columns: 60px 1fr; gap: 1rem; }
+    .show-type, .show-ticket { display: none; }
+    .show-item:nth-child(1) .show-ticket, .show-item:nth-child(1) .show-type { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Karl Antoine</div>
+  <ul class="nav-links">
+    <li><a href="#shows">Shows</a></li>
+    <li><a href="#videos">Watch</a></li>
+    <li><a href="#listen">Listen</a></li>
+    <li><a href="#store">Store</a></li>
+    <li><a href="#booking">Contact</a></li>
+  </ul>
+  <a href="#booking" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-left">
+    <div class="hero-tag fade-up">Pianist · Composer · Live Performer</div>
+    <h1 class="hero-name fade-up" style="transition-delay:0.1s">
+      Karl
+      <em>Antoine</em>
+    </h1>
+    <p class="hero-subtitle fade-up" style="transition-delay:0.2s">
+      Where soulful keys meet cinematic rhythm — intimate performances that move rooms and move hearts.
+    </p>
+    <div class="hero-actions fade-up" style="transition-delay:0.3s">
+      <a href="#shows" class="btn-primary">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="6"/></svg>
+        Upcoming Shows
+      </a>
+      <a href="#listen" class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="18" r="3"/><circle cx="15" cy="15" r="3"/><path d="M9 18V6l6-3v9"/></svg>
+        Stream Music
+      </a>
+    </div>
+    <div class="hero-stats fade-up" style="transition-delay:0.4s">
+      <div>
+        <span class="stat-num">10+</span>
+        <div class="stat-label">Years Performing</div>
+      </div>
+      <div>
+        <span class="stat-num">3</span>
+        <div class="stat-label">Weekly Residencies</div>
+      </div>
+      <div>
+        <span class="stat-num">∞</span>
+        <div class="stat-label">Souls Moved</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-wrap">
+      <img src="IMG_2156.jpeg" alt="Karl Antoine" class="hero-photo" id="heroPhoto">
+      <div class="hero-vinyl"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item">Live at the Airport</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Sunday Church Sessions</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Late Night Lounge</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">New Music Available</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Book for Private Events</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Full Band Performances</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Live at the Airport</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Sunday Church Sessions</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Late Night Lounge</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">New Music Available</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Book for Private Events</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">Full Band Performances</span><span class="ticker-dot">◆</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text fade-up">
+        <div class="section-num">01 — About</div>
+        <h2 class="section-title" style="margin-bottom:2rem">The <em>Sound</em><br>of Experience</h2>
+        <p>
+          <strong>Karl Antoine</strong> is a pianist whose music exists at the intersection of soul, jazz, and cinematic emotion. Every performance is an invitation — to feel, to exhale, to be present in the moment the keys breathe life into a room.
+        </p>
+        <blockquote class="about-pull">
+          "Music isn't something I play. It's something I live through my hands."
+        </blockquote>
+        <p>
+          Whether holding down a weekly residency at the <strong>airport</strong>, leading worship in church sanctuaries, or commanding the late-night energy of lounges and bars with his full band — vocalist, bassist, and drummer — Karl brings an undeniable presence to every stage.
+        </p>
+        <div class="about-venues">
+          <span class="venue-tag">✈ Airport Residency</span>
+          <span class="venue-tag">✝ Church Services</span>
+          <span class="venue-tag">🎷 Lounges & Bars</span>
+          <span class="venue-tag">🎤 Full Band</span>
+          <span class="venue-tag">🎹 Solo Piano</span>
+          <span class="venue-tag">🎉 Private Events</span>
+        </div>
+      </div>
+      <div class="about-image-side fade-up" style="transition-delay:0.2s">
+        <div class="about-img-frame">
+          <img src="IMG_2156.jpeg" alt="Karl Antoine — Pianist">
+          <div class="about-badge">
+            <span>52</span>
+            <small>Weeks a year performing</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWS -->
+<section class="shows" id="shows">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div>
+        <div class="section-num">02 — Shows</div>
+        <h2 class="section-title">Upcoming <em>Performances</em></h2>
+      </div>
+      <a href="#booking" class="section-link">Book for your event →</a>
+    </div>
+    <div class="show-list">
+      <div class="show-item fade-up">
+        <div class="show-date"><div class="day">10</div><div class="mon">May</div></div>
+        <div class="show-info">
+          <div class="venue">Terminal B — International Airport</div>
+          <div class="details"><span>📍 Gate B12 Atrium</span><span>5:00 PM – 8:00 PM</span><span>Solo Piano</span></div>
+        </div>
+        <div class="show-type">Airport</div>
+        <a href="#" class="show-ticket">Free Entry</a>
+      </div>
+      <div class="show-item fade-up">
+        <div class="show-date"><div class="day">11</div><div class="mon">May</div></div>
+        <div class="show-info">
+          <div class="venue">Sunday Morning Worship Service</div>
+          <div class="details"><span>📍 Community Church</span><span>10:00 AM & 12:00 PM</span><span>Full Band</span></div>
+        </div>
+        <div class="show-type church">Church</div>
+        <a href="#" class="show-ticket">Open Doors</a>
+      </div>
+      <div class="show-item fade-up">
+        <div class="show-date"><div class="day">16</div><div class="mon">May</div></div>
+        <div class="show-info">
+          <div class="venue">The Velvet Room Lounge</div>
+          <div class="details"><span>📍 Downtown</span><span>9:00 PM – 1:00 AM</span><span>Full Band + Vocalist</span></div>
+        </div>
+        <div class="show-type lounge">Lounge</div>
+        <a href="#" class="show-ticket">Get Tickets</a>
+      </div>
+      <div class="show-item fade-up">
+        <div class="show-date"><div class="day">17</div><div class="mon">May</div></div>
+        <div class="show-info">
+          <div class="venue">Terminal B — International Airport</div>
+          <div class="details"><span>📍 Gate B12 Atrium</span><span>5:00 PM – 8:00 PM</span><span>Solo Piano</span></div>
+        </div>
+        <div class="show-type">Airport</div>
+        <a href="#" class="show-ticket">Free Entry</a>
+      </div>
+      <div class="show-item fade-up">
+        <div class="show-date"><div class="day">24</div><div class="mon">May</div></div>
+        <div class="show-info">
+          <div class="venue">Blue Note Bar — Private Event</div>
+          <div class="details"><span>📍 Private Venue</span><span>7:00 PM – 11:00 PM</span><span>Full Band</span></div>
+        </div>
+        <div class="show-type lounge">Bar</div>
+        <a href="#booking" class="show-ticket">Book Similar</a>
+      </div>
+      <div class="show-item fade-up">
+        <div class="show-date"><div class="day">01</div><div class="mon">Jun</div></div>
+        <div class="show-info">
+          <div class="venue">Evening Worship Concert</div>
+          <div class="details"><span>📍 Cathedral</span><span>6:00 PM</span><span>Full Band + Choir</span></div>
+        </div>
+        <div class="show-type church">Church</div>
+        <a href="#" class="show-ticket">RSVP</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section class="videos" id="videos">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div>
+        <div class="section-num">03 — Watch</div>
+        <h2 class="section-title">Live <em>Sessions</em></h2>
+      </div>
+      <a href="https://instagram.com/on_my_highest_timeline" target="_blank" class="section-link">More on Instagram →</a>
+    </div>
+    <div class="video-grid">
+      <!-- Featured -->
+      <div class="video-card featured fade-up" onclick="openVideo('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+        <div class="vid-placeholder" style="height:100%;min-height:400px;background:linear-gradient(135deg,#1a1008 0%,#0a0806 100%)">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 60%,rgba(200,144,26,0.12),transparent 70%)"></div>
+          <div style="text-align:center;position:relative;z-index:1">
+            <div style="font-size:4rem;margin-bottom:1rem">🎹</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(242,235,217,0.3);font-style:italic">Add your featured video</div>
+          </div>
+        </div>
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-overlay">
+          <div class="video-title">Airport Terminal Sessions — Vol. 1</div>
+          <div class="video-meta">Solo Piano · Terminal B · 2024</div>
+        </div>
+      </div>
+      <!-- Grid videos -->
+      <div class="video-card fade-up" style="transition-delay:0.1s" onclick="openVideo('')">
+        <div class="vid-placeholder" style="aspect-ratio:16/9;background:linear-gradient(135deg,#12100a,#080600)">
+          <div style="font-size:2rem;opacity:0.15">🎷</div>
+        </div>
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-overlay">
+          <div class="video-title">Sunday Worship — Live</div>
+          <div class="video-meta">Full Band · Church · 2024</div>
+        </div>
+      </div>
+      <div class="video-card fade-up" style="transition-delay:0.15s" onclick="openVideo('')">
+        <div class="vid-placeholder" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0f0c08,#060504)">
+          <div style="font-size:2rem;opacity:0.15">🎤</div>
+        </div>
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-overlay">
+          <div class="video-title">Late Night at The Velvet Room</div>
+          <div class="video-meta">Full Band · Lounge · 2024</div>
+        </div>
+      </div>
+      <div class="video-card fade-up" style="transition-delay:0.2s" onclick="openVideo('')">
+        <div class="vid-placeholder" style="aspect-ratio:16/9;background:linear-gradient(135deg,#100d08,#070605)">
+          <div style="font-size:2rem;opacity:0.15">🎵</div>
+        </div>
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-overlay">
+          <div class="video-title">Original Composition — Studio</div>
+          <div class="video-meta">Piano Solo · Studio Session</div>
+        </div>
+      </div>
+      <div class="video-card fade-up" style="transition-delay:0.25s" onclick="openVideo('')">
+        <div class="vid-placeholder" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0c0a07,#060504)">
+          <div style="font-size:2rem;opacity:0.15">✨</div>
+        </div>
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-overlay">
+          <div class="video-title">Improvisational Flow</div>
+          <div class="video-meta">Solo · Live Capture</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LISTEN -->
+<section class="listen" id="listen">
+  <div class="container">
+    <div class="listen-inner">
+      <div class="album-display fade-up">
+        <div class="album-art">
+          <span class="piano-icon">🎹</span>
+          <div class="art-text">Karl Antoine</div>
+          <div class="waveform">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+          <div class="playing-bar"></div>
+        </div>
+      </div>
+      <div class="fade-up" style="transition-delay:0.15s">
+        <div class="section-num">04 — Listen</div>
+        <h2 class="section-title" style="margin-bottom:1rem">Stream<br><em>Everywhere</em></h2>
+        <p style="color:var(--muted);font-size:0.88rem;line-height:1.8;margin-bottom:2rem">Available on all major platforms. Follow for new releases, live recordings, and exclusive drops.</p>
+        <div class="platforms">
+          <a href="#" class="platform-link">
+            <div class="platform-icon" style="background:rgba(30,215,96,0.1);color:#1ED760;">♫</div>
+            <span class="platform-name">Spotify</span>
+            <span class="platform-arrow">→</span>
+          </a>
+          <a href="#" class="platform-link">
+            <div class="platform-icon" style="background:rgba(252,61,57,0.1);color:#FC3D39;">♫</div>
+            <span class="platform-name">Apple Music</span>
+            <span class="platform-arrow">→</span>
+          </a>
+          <a href="#" class="platform-link">
+            <div class="platform-icon" style="background:rgba(255,0,0,0.1);color:#FF0000;">▶</div>
+            <span class="platform-name">YouTube Music</span>
+            <span class="platform-arrow">→</span>
+          </a>
+          <a href="#" class="platform-link">
+            <div class="platform-icon" style="background:rgba(0,140,255,0.1);color:#008CFF;">♫</div>
+            <span class="platform-name">Tidal</span>
+            <span class="platform-arrow">→</span>
+          </a>
+          <a href="https://instagram.com/on_my_highest_timeline" target="_blank" class="platform-link">
+            <div class="platform-icon" style="background:rgba(212,98,26,0.12);color:#E0A840;">◎</div>
+            <span class="platform-name">Instagram @on_my_highest_timeline</span>
+            <span class="platform-arrow">→</span>
+          </a>
+          <a href="https://facebook.com/karl.antoine.92" target="_blank" class="platform-link">
+            <div class="platform-icon" style="background:rgba(24,119,242,0.1);color:#1877F2;">f</div>
+            <span class="platform-name">Facebook</span>
+            <span class="platform-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORE -->
+<section class="store" id="store">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div>
+        <div class="section-num">05 — Store</div>
+        <h2 class="section-title">Own the <em>Music</em></h2>
+      </div>
+      <a href="#" class="section-link">View all products →</a>
+    </div>
+    <div class="store-grid">
+      <div class="store-card fade-up">
+        <div class="store-card-img">
+          <span class="product-icon">🎹</span>
+          <div class="store-badge">Digital</div>
+        </div>
+        <div class="store-card-body">
+          <div class="store-card-title">Midnight Keys — Vol. 1</div>
+          <div class="store-card-sub">Full album digital download. High-quality FLAC & MP3. Instant delivery after purchase.</div>
+          <div class="store-card-footer">
+            <div class="store-price">$12<small>digital</small></div>
+            <button class="btn-buy" onclick="addToCart('Midnight Keys Vol.1 - Digital', 12)">Download</button>
+          </div>
+        </div>
+      </div>
+      <div class="store-card fade-up" style="transition-delay:0.1s">
+        <div class="store-card-img" style="background:linear-gradient(135deg,#1a1410,#0c0a08)">
+          <span class="product-icon">💿</span>
+          <div class="store-badge" style="background:var(--copper)">Physical</div>
+        </div>
+        <div class="store-card-body">
+          <div class="store-card-title">Midnight Keys — CD Edition</div>
+          <div class="store-card-sub">Physical CD with booklet. Signed by Karl. Ships within 5–7 business days. Free digital copy included.</div>
+          <div class="store-card-footer">
+            <div class="store-price">$24<small>+ shipping</small></div>
+            <button class="btn-buy" onclick="addToCart('Midnight Keys Vol.1 - CD', 24)">Order CD</button>
+          </div>
+        </div>
+      </div>
+      <div class="store-card fade-up" style="transition-delay:0.2s">
+        <div class="store-card-img" style="background:linear-gradient(135deg,#13100c,#0a0806)">
+          <span class="product-icon">🎵</span>
+          <div class="store-badge">Single</div>
+        </div>
+        <div class="store-card-body">
+          <div class="store-card-title">Airport Sessions — Single</div>
+          <div class="store-card-sub">Live recorded airport performance. Raw, unfiltered. High-quality digital download.</div>
+          <div class="store-card-footer">
+            <div class="store-price">$1.99<small>single</small></div>
+            <button class="btn-buy" onclick="addToCart('Airport Sessions Single', 1.99)">Buy Track</button>
+          </div>
+        </div>
+      </div>
+      <div class="store-card fade-up" style="transition-delay:0.05s">
+        <div class="store-card-img" style="background:linear-gradient(135deg,#141012,#0a080a)">
+          <span class="product-icon">🎧</span>
+          <div class="store-badge" style="background:var(--gold)">Bundle</div>
+        </div>
+        <div class="store-card-body">
+          <div class="store-card-title">Complete Discography Bundle</div>
+          <div class="store-card-sub">All released albums and singles. Digital downloads + streaming access. Best value.</div>
+          <div class="store-card-footer">
+            <div class="store-price">$29<small>bundle</small></div>
+            <button class="btn-buy" onclick="addToCart('Complete Discography Bundle', 29)">Get Bundle</button>
+          </div>
+        </div>
+      </div>
+      <div class="store-card fade-up" style="transition-delay:0.15s">
+        <div class="store-card-img" style="background:linear-gradient(135deg,#121814,#080c0a)">
+          <span class="product-icon">🎼</span>
+        </div>
+        <div class="store-card-body">
+          <div class="store-card-title">Sheet Music — Select Pieces</div>
+          <div class="store-card-sub">PDF sheet music for select original compositions. Instant download. Perfect for piano students.</div>
+          <div class="store-card-footer">
+            <div class="store-price">$8<small>per piece</small></div>
+            <button class="btn-buy" onclick="addToCart('Sheet Music', 8)">Download PDF</button>
+          </div>
+        </div>
+      </div>
+      <div class="store-card fade-up" style="transition-delay:0.2s">
+        <div class="store-card-img" style="background:linear-gradient(135deg,#181410,#0c0a08)">
+          <span class="product-icon">👕</span>
+          <div class="store-badge" style="background:var(--copper)">Merch</div>
+        </div>
+        <div class="store-card-body">
+          <div class="store-card-title">Karl Antoine — Premium Tee</div>
+          <div class="store-card-sub">Limited run. 100% cotton. Embossed logo. Sizes S–XL. Ships within 7–10 business days.</div>
+          <div class="store-card-footer">
+            <div class="store-price">$35<small>+ shipping</small></div>
+            <button class="btn-buy" onclick="addToCart('Karl Antoine Tee', 35)">Order Tee</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING / CONTACT -->
+<section class="booking" id="booking">
+  <div class="container">
+    <div class="booking-eyebrow fade-up">Available for bookings</div>
+    <h2 class="booking-title fade-up" style="transition-delay:0.1s">
+      Let's Create<br><em>Something Unforgettable</em>
+    </h2>
+    <p class="booking-sub fade-up" style="transition-delay:0.15s">
+      Weddings, corporate events, private dinners, church services, lounge residencies — Karl is available for bookings of all kinds.
+    </p>
+    <div class="fade-up" style="transition-delay:0.2s">
+      <button onclick="openBookingModal()" class="btn-primary" style="margin-bottom:2rem;display:inline-flex">
+        Send a Booking Inquiry
+      </button>
+    </div>
+    <div class="fade-up" style="transition-delay:0.25s">
+      <a href="mailto:booking@karlantoine.com" class="booking-email">booking@karlantoine.com</a>
+    </div>
+    <div class="socials fade-up" style="transition-delay:0.3s">
+      <a href="https://instagram.com/on_my_highest_timeline" target="_blank" class="social-link" title="Instagram">IG</a>
+      <a href="https://facebook.com/karl.antoine.92" target="_blank" class="social-link" title="Facebook">FB</a>
+      <a href="#" class="social-link" title="YouTube">YT</a>
+      <a href="#" class="social-link" title="Spotify">SP</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Karl Antoine</div>
+  <div class="footer-copy">© 2026 Karl Antoine. All rights reserved.</div>
+  <ul class="footer-links">
+    <li><a href="#shows">Shows</a></li>
+    <li><a href="#store">Store</a></li>
+    <li><a href="#booking">Contact</a></li>
+    <li><a href="#">Privacy</a></li>
+  </ul>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="videoModal" onclick="closeVideo(event)">
+  <div style="position:relative;width:85%;max-width:900px">
+    <button onclick="closeVideoModal()" style="position:absolute;top:-40px;right:0;background:none;border:none;color:var(--cream);font-size:1.4rem;cursor:none;font-family:'Syne',sans-serif;letter-spacing:0.1em;font-size:0.7rem;text-transform:uppercase">✕ Close</button>
+    <iframe id="videoFrame" width="100%" height="500" src="" frameborder="0" allowfullscreen style="display:block;border:1px solid var(--border)"></iframe>
+  </div>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal" onclick="closeBooking(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeBookingModal()">✕</button>
+    <div class="modal-title">Book Karl Antoine</div>
+    <div class="modal-sub">Fill out the form and you'll hear back within 24 hours.</div>
+    <div class="form-group">
+      <label>Your Name</label>
+      <input type="text" placeholder="Jane Smith">
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label>Event Type</label>
+      <select>
+        <option>Wedding / Reception</option>
+        <option>Corporate Event</option>
+        <option>Private Dinner</option>
+        <option>Church / Worship</option>
+        <option>Lounge / Bar</option>
+        <option>Birthday / Celebration</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Event Date & Details</label>
+      <textarea placeholder="Tell us about your event, location, expected attendance, and any special requests..."></textarea>
+    </div>
+    <button class="form-submit" onclick="submitBooking()">Send Inquiry →</button>
+  </div>
+</div>
+
+<!-- CART TOAST -->
+<div id="toast" style="position:fixed;bottom:2rem;right:2rem;background:var(--amber);color:var(--black);padding:0.8rem 1.4rem;font-family:'Syne',sans-serif;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;z-index:300;transform:translateY(100px);transition:transform 0.3s;border-radius:0;">
+  ✓ Added to cart
+</div>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Fade-up observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Video modal
+  function openVideo(url) {
+    document.getElementById('videoFrame').src = url || '';
+    document.getElementById('videoModal').classList.add('active');
+  }
+  function closeVideo(e) {
+    if (e.target === document.getElementById('videoModal')) closeVideoModal();
+  }
+  function closeVideoModal() {
+    document.getElementById('videoModal').classList.remove('active');
+    document.getElementById('videoFrame').src = '';
+  }
+
+  // Booking modal
+  function openBookingModal() {
+    document.getElementById('bookingModal').classList.add('active');
+  }
+  function closeBooking(e) {
+    if (e.target === document.getElementById('bookingModal')) closeBookingModal();
+  }
+  function closeBookingModal() {
+    document.getElementById('bookingModal').classList.remove('active');
+  }
+  function submitBooking() {
+    closeBookingModal();
+    showToast('Inquiry sent!');
+  }
+
+  // Cart
+  function addToCart(item, price) {
+    showToast(`Added: ${item}`);
+  }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = '✓ ' + msg;
+    t.style.transform = 'translateY(0)';
+    setTimeout(() => { t.style.transform = 'translateY(100px)'; }, 2800);
+  }
+
+  // Hero image fallback — use a gradient if the image doesn't load
+  document.getElementById('heroPhoto').onerror = function() {
+    this.style.display = 'none';
+    this.parentElement.style.background = 'radial-gradient(ellipse at 60% 40%, rgba(212,98,26,0.25) 0%, rgba(200,144,26,0.08) 40%, transparent 70%)';
+  };
+</script>
+</body>
+</html>
